@@ -1,19 +1,32 @@
-import MyComponent from './MyComponent';
-import MyComponent2 from './MyComponent2';
+
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ListItems from './ListComponent';
+//import SampleComponent from './SampleComponent';
+
 
 class App extends Component {
-  constructor(props) {
+  
+  constructor(props){
     super(props);
     this.state = {
-      isOn: true
+      term: '',
+      items: []
     };
   }
-  toggle = ()=> {
-    this.setState({isOn: !this.state.isOn})
-  }
+  
+onChange = (event) => {
+  this.setState({term: event.target.value});
+}
+
+onSubmit = (event) => {
+  event.preventDefault()
+  this.setState({
+    term: '',
+    items: [...this.state.items, this.state.term]
+  });
+}
 
   render() {
     return (
@@ -21,15 +34,16 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Priolist</h1>
+          
         </header>
-        <p className="App-intro">
-          Know your priority.
-          <MyComponent />
-          <MyComponent2 name = "Ashish"/>
-        </p>
-        <button onClick= {this.toggle}>
-          {this.state.isOn ? 'On' : 'Off'}
-        </button>
+        <div className="App-intro">
+          {/* <SampleComponent /> */}
+          <form className="App" onSubmit={this.onSubmit}>
+              <input value={this.state.term} onChange={this.onChange} />
+              <button>Submit</button>
+          </form>
+          <ListItems items={this.state.items}/>
+        </div>
       </div>
     );
   }
